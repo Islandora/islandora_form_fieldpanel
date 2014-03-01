@@ -39,11 +39,12 @@ class FieldPanel {
   public static function process(array $element, array &$form_state, array $complete_form = NULL) {
     self::addRequiredResources($form_state);
     $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE; // Defaults to TRUE
-    if ($add) {
+    $children = element_children($element);
+    if ($add && !empty($children)) {
       $add_label = isset($element['#user_data']['add_label']) ? $element['#user_data']['add_label'] : t('Add');
       $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
     }
-    $element['#prefix'] = "<div class='clear-block islandora-form-fieldpanel-panel' id='{$element['#hash']}'>";
+    $element['#prefix'] = "<div class='clear-block islandora-form-fieldpanel-container' id='{$element['#hash']}'>";
     $element['#suffix'] = '</div>';
     return $element;
   }
@@ -55,6 +56,9 @@ class FieldPanel {
    * @return FormElement
    */
   private static function createAddButton(array &$element, array &$complete_form, $label) {
+    $children = element_children($element);
+    $child = $element[array_pop($children)];
+
     $add['#type'] = 'button';
     $add['#weight'] = 4;
     $add['#size'] = 30;
@@ -68,7 +72,7 @@ class FieldPanel {
         'target' => $element['#hash'],
         'render' => $element['#hash'],
         'action' => 'add',
-        'child' => $element['#hash']
+        'child' => $child['#hash'],
       ),
       'callback' => 'xml_form_elements_ajax_callback',
       'wrapper' => $element['#hash'], // The parents wrapper is set to the parents hash.
