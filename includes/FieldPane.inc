@@ -47,7 +47,7 @@ class FieldPane {
       $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
     }
     $delete = isset($element['#user_data']['delete']) ? $element['#user_data']['delete'] : TRUE; // Defaults to TRUE
-    if ($delete) {
+    if ($delete && $element['#weight'] !== 0) {
       $delete_label = isset($element['#user_data']['delete_label']) ? $element['#user_data']['delete_label'] : t('Delete');
       $element[self::DeleteButton] = self::createRemoveButton($element, $complete_form, $delete_label);
     }
