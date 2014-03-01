@@ -37,8 +37,10 @@ class FieldPane {
    * @return array
    */
   public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
+    $panel = get_form_element_parent($element, $complete_form);
+    $children = element_children($panel);
     $delete = isset($element['#user_data']['delete']) ? $element['#user_data']['delete'] : TRUE; // Defaults to TRUE
-    if ($delete && $element['#weight'] !== 0) {
+    if (count($children) > 2 && $delete) {
       $delete_label = isset($element['#user_data']['delete_label']) ? $element['#user_data']['delete_label'] : t('Delete');
       $element[self::DeleteButton] = self::createRemoveButton($element, $complete_form, $delete_label);
     }
