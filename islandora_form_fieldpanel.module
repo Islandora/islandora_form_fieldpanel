@@ -23,13 +23,15 @@ function islandora_form_fieldpanel_element_info() {
   return array(
     'fieldpanel' => array(
       '#input' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
       '#process' => 'islandora_form_fieldpanel_fieldpanel_process',
       '#theme_wrappers' => array('fieldpanel', 'form_element'),
     ),
     'fieldpane' => array(
       '#input' => TRUE,
-      '#user_data' => array('add' => TRUE, 'delete' => TRUE),
       '#process' => 'islandora_form_fieldpanel_fieldpane_process',
+      '#user_data' => array('add' => TRUE, 'delete' => TRUE),
       '#theme_wrappers' => array('fieldpane'),
     ),
   );
