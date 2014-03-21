@@ -72,10 +72,10 @@ class FieldPane {
     $add['#limit_validation_errors'][] = $element['#parents'];
     $add['#ajax'] = array(
       'params' => array(
-      	'target' => $tabs['#hash'],
+        'target' => $tabs['#hash'],
         'render' => $tabs['#hash'],
-	'action' => 'add',
-      	'child' => $element['#hash']
+        'action' => 'add',
+        'child' => $element['#hash']
       ),
       'callback' => 'xml_form_elements_ajax_callback',
       'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
