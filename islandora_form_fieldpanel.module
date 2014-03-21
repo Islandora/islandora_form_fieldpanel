@@ -28,6 +28,7 @@ function islandora_form_fieldpanel_element_info() {
     ),
     'fieldpane' => array(
       '#input' => TRUE,
+      '#user_data' => array('add' => TRUE, 'delete' => TRUE),
       '#process' => 'islandora_form_fieldpanel_fieldpane_process',
       '#theme_wrappers' => array('fieldpane'),
     ),
