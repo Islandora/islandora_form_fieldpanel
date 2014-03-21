@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Hooks and constants for xml_form_elements.
+ */
+
+/**
+ * Constants
+ */
+define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANEL', 'fieldpane');
+define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE', 'fieldpanel');
+define('ISLANDORA_FORM_FIELDPANEL_PATH_MODULE', drupal_get_path('module', 'xml_form_elements') . '/');
+define('ISLANDORA_FORM_FIELDPANEL_PATH_INCLUDES', ISLANDORA_FORM_FIELDPANEL_PATH_MODULE . 'includes/');
+define('ISLANDORA_FORM_FIELDPANEL_PATH_THEME', ISLANDORA_FORM_FIELDPANEL_PATH_MODULE . 'theme/');
+define('ISLANDORA_FORM_FIELDPANEL_PATH_JS', ISLANDORA_FORM_FIELDPANEL_PATH_MODULE . 'js/');
+define('ISLANDORA_FORM_FIELDPANEL_PATH_CSS', ISLANDORA_FORM_FIELDPANEL_PATH_MODULE . 'css/');
+
+/**
+ * Implements hook_element_info().
+ */
+function islandora_form_fieldpanel_element_info() {
+  return array(
+    'fieldpanel' => array(
+      '#input' => TRUE,
+      '#process' => 'islandora_form_fieldpanel_fieldpanel_process',
+      '#theme_wrappers' => array('fieldpanel'),
+    ),
+    'fieldpane' => array(
+      '#input' => TRUE,
+      '#process' => 'islandora_form_fieldpanel_fieldpane_process',
+      '#theme_wrappers' => array('fieldpane', 'form_element'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function islandora_form_fieldpanel_theme($existing, $type, $theme, $path) {
+  return array(
+    ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE => array(
+      'render element' => 'element',
+      'template' => 'templates/FieldPane',
+      'file' => 'includes/FieldPane.inc',
+    ),
+    // The content of a single tabpanel.
+    ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANEL => array(
+      'render element' => 'element',
+      'file' => 'includes/FieldPanel.inc',
+    ),
+  );
+}
+
+/**
+ * Process the 'fieldpane' Element.
+ *
+ * @param array $element
+ *   The element to be processed.
+ * @param mixed $edit
+ *   The submitted value for this element, or NULL.
+ * @param array $form_state
+ *   The drupal form state.
+ * @param array $complete_form
+ *   The drupal form.
+ *
+ * @return array
+ *   The processed element.
+ */
+function islandora_form_fieldpanel_fieldpane_process(array $element, array &$form_state, array $complete_form = NULL) {
+  form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPane');
+  return FieldPane::Process($element, $form_state, $complete_form);
+}
+
+/**
+ * Process the 'fieldpanel' Element.
+ *
+ * @param array $element
+ *   The element to be processed.
+ * @param mixed $edit
+ *   The submitted value for this element, or NULL.
+ * @param array $form_state
+ *   The drupal form state.
+ * @param array $complete_form
+ *   The drupal form.
+ *
+ * @return array
+ *   The processed element.
+ */
+function islandora_form_fieldpanel_fieldpanel_process(array $element, array &$form_state, array $complete_form = NULL) {
+  form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
+  return FieldPanel::Process($element, $form_state, $complete_form);
+}

@@ -1,0 +1,6 @@
+name = Islandora Form - Fieldpanel element
+description = Alternative to tab elements for multi-value fields.
+package = Islandora Dependencies
+dependencies[] = xml_form_api
+version = 7.x-1.x
+core = 7.x
