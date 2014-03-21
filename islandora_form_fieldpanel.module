@@ -2,14 +2,14 @@
 
 /**
  * @file
- * Hooks and constants for xml_form_elements.
+ * Hooks and constants for islandora_form_fieldpanel.
  */
 
 /**
  * Constants
  */
-define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANEL', 'fieldpane');
-define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE', 'fieldpanel');
+define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANEL', 'fieldpanel');
+define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE', 'fieldpane');
 define('ISLANDORA_FORM_FIELDPANEL_PATH_MODULE', drupal_get_path('module', 'xml_form_elements') . '/');
 define('ISLANDORA_FORM_FIELDPANEL_PATH_INCLUDES', ISLANDORA_FORM_FIELDPANEL_PATH_MODULE . 'includes/');
 define('ISLANDORA_FORM_FIELDPANEL_PATH_THEME', ISLANDORA_FORM_FIELDPANEL_PATH_MODULE . 'theme/');
@@ -24,12 +24,12 @@ function islandora_form_fieldpanel_element_info() {
     'fieldpanel' => array(
       '#input' => TRUE,
       '#process' => 'islandora_form_fieldpanel_fieldpanel_process',
-      '#theme_wrappers' => array('fieldpanel'),
+      '#theme_wrappers' => array('fieldpanel', 'form_element'),
     ),
     'fieldpane' => array(
       '#input' => TRUE,
       '#process' => 'islandora_form_fieldpanel_fieldpane_process',
-      '#theme_wrappers' => array('fieldpane', 'form_element'),
+      '#theme_wrappers' => array('fieldpane'),
     ),
   );
 }
@@ -39,15 +39,16 @@ function islandora_form_fieldpanel_element_info() {
  */
 function islandora_form_fieldpanel_theme($existing, $type, $theme, $path) {
   return array(
-    ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE => array(
-      'render element' => 'element',
-      'template' => 'templates/FieldPane',
-      'file' => 'includes/FieldPane.inc',
-    ),
-    // The content of a single tabpanel.
+    // Single Field Panel holds multiple field panes.
     ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANEL => array(
       'render element' => 'element',
+      'template' => 'templates/FieldPanel',
       'file' => 'includes/FieldPanel.inc',
+    ),
+    // The content of a single fieldpane.
+    ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE => array(
+      'render element' => 'element',
+      'file' => 'includes/FieldPane.inc',
     ),
   );
 }

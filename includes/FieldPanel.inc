@@ -3,127 +3,93 @@
 /**
  * @file
  *
- *  Allows forms to dynamically add new tabs to a tabpanel in a form.
  */
-module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
+module_load_include('inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
 
-/**
- * A collection of static functions that allow for theming and processing tabpanels.
- */
 class FieldPanel {
-  /**
-   * Constants
-   */
-  const AddButton = 'add-tabpanel';
-  const DeleteButton = 'delete-tabpanel';
 
   /**
-   * TabPanel's theme hook.
+   * Loads the required resources for displaying the FieldPane element.
    *
-   * @param array $element
-   * @return string
+   * @staticvar boolean $load
+   *   Keeps us from loading the same files multiple times, while not required it just saves some time.
    */
-  public static function Theme($element) {
-    $children = isset($element['#children']) ? $element['#children'] : '';
-    $description = isset($element['#description']) ? "<div class='description'>{$element['#description']}</div>" : '';
-    return "<div id='{$element['#hash']}'>{$description}{$children}</div>";
+  public static function addRequiredResources(array &$form_state) {
+    static $load = TRUE;
+    if ($load) {
+      form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Element');
+      Element::addRequiredResources();
+      Element::addUIWidgets('ui.tabs');
+      Element::addUIThemeStyles(array('ui.core.css', 'ui.tabs.css', 'ui.theme.css'));
+      drupal_add_js(ISLANDORA_FORM_FIELDPANEL_PATH_JS . '/fieldpanel.js');
+      drupal_add_css(ISLANDORA_FORM_FIELDPANEL_PATH_CSS . '/fieldpanel.css');
+      $load = FALSE;
+    }
   }
 
   /**
-   * The default #process function for tabpanel's.
-   *
-   * Adds elements that allow for adding/remove form elements.
    *
    * @param array $element
-   * @param mixed $edit
+   * @param type $edit
    * @param array $form_state
    * @param array $complete_form
-   * @return array
    */
-  public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
-    $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE; // Defaults to TRUE
-    if ($add) {
-      $add_label = isset($element['#user_data']['add_label']) ? $element['#user_data']['add_label'] : t('Add');
-      $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
-    }
-    $delete = isset($element['#user_data']['delete']) ? $element['#user_data']['delete'] : TRUE; // Defaults to TRUE
-    if ($delete) {
-      $delete_label = isset($element['#user_data']['delete_label']) ? $element['#user_data']['delete_label'] : t('Delete');
-      $element[self::DeleteButton] = self::createRemoveButton($element, $complete_form, $delete_label);
-    }
+  public static function process(array $element, array &$form_state, array $complete_form = NULL) {
+    self::addRequiredResources($form_state);
+    $element['#prefix'] = "<div class='clear-block' id='{$element['#hash']}'>";
+    $element['#suffix'] = '</div>';
     return $element;
   }
 
   /**
-   * Creates a button that allows tabpanels to duplicate.
    *
-   * @param FormElement $tabpanel
-   * @return FormElement
+   * @param array $children
    */
-  private static function createAddButton(array &$element, array &$complete_form, $label) {
-    $tabs = get_form_element_parent($element, $complete_form);
-    $add['#type'] = 'button';
-    $add['#weight'] = 4;
-    $add['#size'] = 30;
-    $add['#id'] = $add['#name'] = $element['#hash'] . '-add';
-    $add['#value'] = $label;
-    $add['#prefix'] = '<div class="ui-tabpanel-add-button">';
-    $add['#suffix'] = '</div>';
-    $add['#limit_validation_errors'][] = $element['#parents'];
-    $add['#ajax'] = array(
-      'params' => array(
-      	'target' => $tabs['#hash'],
-        'render' => $tabs['#hash'],
-	'action' => 'add',
-      	'child' => $element['#hash']
-      ),
-      'callback' => 'xml_form_elements_ajax_callback',
-      'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
-      'method' => 'replaceWith',
-      'effect' => 'fade',
-    );
-    return $add;
-  }
-
-  /**
-   * Creates a remove button that allows the user to remove this tabpanel.
-   *
-   * @param FormElement $tabpanel
-   * @return FormElement
-   */
-  private static function createRemoveButton(array &$element, array & $complete_form, $label) {
-    $tabs = get_form_element_parent($element, $complete_form);
-    $delete['#type'] = 'button';
-    $delete['#weight'] = 4;
-    $delete['#size'] = 30;
-    $delete['#id'] = $delete['#name'] = $element['#hash'] . '-remove';
-    $delete['#value'] = $label;
-    $delete['#attributes'] = array(
-      'style' => 'display:none', // Triggered via javascript.
-    );
-    $delete['#prefix'] = '<div class="ui-tabpanel-delete-button">';
-    $delete['#suffix'] = '</div>';
-    $delete['#limit_validation_errors'][] = $element['#parents'];
-    $delete['#ajax'] = array(
-      'callback' => 'xml_form_elements_ajax_callback',
-      'params' => array(
-      	'target' => $tabs['#hash'],
-        'render' => $tabs['#hash'],
-	'action' => 'delete',
-      	'child' => $element['#hash']
-      ),
-      'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
-      'method' => 'replaceWith',
-      'effect' => 'fade',
-    );
-    return $delete;
+  public static function FilterChildren(array $child) {
+    $ret = ($child['#type'] == 'fieldpane') ? TRUE : FALSE;
+    return $ret;
   }
 
 }
 
 /**
- * Theme hook for a tabpanel
+ * Preprocess tabs theme hook.
+ *
+ * @param array $vars
  */
-function theme_fieldpanel($vars) {
-  return FieldPanel::Theme($vars['element']);
+function template_preprocess_fieldpanel(&$vars) {
+  $tabs = $vars['element'];
+  // Header Info
+  $vars['collapsible'] = $tabs['#collapsible'] == TRUE;
+  $vars['collapsed'] = $tabs['#collapsed'] == TRUE;
+  // Get Fieldpanel
+  $keys = element_children($tabs);
+  $children = array();
+
+  foreach ($keys as $key) {
+    $children[$key] = &$tabs[$key];
+  }
+  $children = array_filter($children, array('FieldPanel', 'FilterChildren'));
+  // First element has different icons, and title.
+  $first = array_shift($children);
+  $vars['title'] = isset($first['#title']) ? $first['#title'] : 1;
+  $vars['link'] = $first['#hash'];
+  // Remaining fieldpane.
+  $count = 2;
+  foreach ($children as $child) {
+    $title = isset($child['#title']) ? $child['#title'] : $count;
+    $delete = isset($child[FieldPane::DeleteButton]) ? $child[FieldPane::DeleteButton]['#id'] : FALSE;
+    $vars['fieldpane'][] = array($title, $child['#hash'], $delete);
+    $count++;
+  }
+  // Content Info
+  if (isset($tabs['#children'])) {
+    $vars['content'] = $tabs['#children'];
+  }
+  else {
+    $parents = $tabs['#array_parents'];
+    $name = array_pop($parents);
+    $vars['content'] = '';
+    drupal_set_message(t('Attempted to create tab %name without defining any child fieldpanes.', array('%name' => $name)), 'error');
+  }
 }
