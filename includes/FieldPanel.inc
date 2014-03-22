@@ -71,7 +71,7 @@ class FieldPanel {
         'child' => $element['#hash']
       ),
       'callback' => 'xml_form_elements_ajax_callback',
-      'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
+      'wrapper' => $element['#hash'], // The parents wrapper is set to the parents hash.
       'method' => 'replaceWith',
       'effect' => 'fade',
     );
