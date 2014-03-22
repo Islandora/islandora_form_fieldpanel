@@ -1,9 +1,10 @@
 .islandora-form-fieldpanel-panel {
-    border: 1px solid black;
+    border: 1px solid #AAA;
     padding: 5px;
 }
 
 .islandora-form-fieldpanel-pane {
-    border: 1px solid black;
+    border: 1px solid #AAA;
     padding: 5px;
+    margin: 5px;
 }
