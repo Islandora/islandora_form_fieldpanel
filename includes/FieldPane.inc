@@ -98,19 +98,16 @@ class FieldPane {
     $delete['#size'] = 30;
     $delete['#id'] = $delete['#name'] = $element['#hash'] . '-remove';
     $delete['#value'] = $label;
-    $delete['#attributes'] = array(
-      'style' => 'display:none', // Triggered via javascript.
-    );
     $delete['#prefix'] = '<div class="ui-fieldpane-delete-button">';
     $delete['#suffix'] = '</div>';
     $delete['#limit_validation_errors'][] = $element['#parents'];
     $delete['#ajax'] = array(
       'callback' => 'xml_form_elements_ajax_callback',
       'params' => array(
-      	'target' => $tabs['#hash'],
+        'target' => $tabs['#hash'],
         'render' => $tabs['#hash'],
-	'action' => 'delete',
-      	'child' => $element['#hash']
+        'action' => 'delete',
+        'child' => $element['#hash']
       ),
       'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
       'method' => 'replaceWith',
