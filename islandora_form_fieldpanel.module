@@ -111,7 +111,8 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
 
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $element, array &$form, array &$form_state) {
   dpm($element);
-  dpm($form_state['triggering_element']);
+  dpm($form_state);
+  dpm($form);
 //  $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
 //  $new_pane = clone $pane;
 //  $new_pane->eachDecendant(function($element) { $element->default_value = NULL; });
