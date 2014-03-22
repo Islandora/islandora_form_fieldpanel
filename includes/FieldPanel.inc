@@ -21,8 +21,8 @@ class FieldPanel {
       Element::addRequiredResources();
       Element::addUIWidgets('ui.tabs');
       Element::addUIThemeStyles(array('ui.core.css', 'ui.tabs.css', 'ui.theme.css'));
-      drupal_add_js(ISLANDORA_FORM_FIELDPANEL_PATH_JS . '/fieldpanel.js');
-      drupal_add_css(ISLANDORA_FORM_FIELDPANEL_PATH_CSS . '/fieldpanel.css');
+      drupal_add_js(ISLANDORA_FORM_FIELDPANEL_PATH_JS . 'fieldpanel.js');
+      drupal_add_css(ISLANDORA_FORM_FIELDPANEL_PATH_CSS . 'fieldpanel.css');
       $load = FALSE;
     }
   }
