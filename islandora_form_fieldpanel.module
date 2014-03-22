@@ -111,18 +111,19 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
 
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $element, array &$form, array &$form_state) {
   dpm($element);
-//  $tab = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
-//  $new_tab = clone $tab;
-//  $new_tab->eachDecendant(function($element) { $element->default_value = NULL; });
-//  $element->adopt($new_tab);
-//  $form[] = $new_tab->toArray();
+  dpm($form_state['triggering_element']['#ajax']['params']);
+  $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
+  $new_pane = clone $pane;
+  $new_pane->eachDecendant(function($element) { $element->default_value = NULL; });
+  $element->adopt($new_pane);
+  $form[] = $new_pane->toArray();
 }
 
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_delete(FormElement $element, array &$form, array &$form_state) {
-  $tab = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
-  $tab->orphan();
+  $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
+  $pane->orphan();
   foreach (element_children($form) as $child) {
-    if ($form[$child]['#hash'] == $tab->hash) {
+    if ($form[$child]['#hash'] == $pane->hash) {
       unset($form[$child]);
       break;
     }
