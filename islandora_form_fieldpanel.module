@@ -110,7 +110,7 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
 }
 
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $element, array &$form, array &$form_state) {
-  dpm($element)
+  dpm($element);
 //  $tab = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
 //  $new_tab = clone $tab;
 //  $new_tab->eachDecendant(function($element) { $element->default_value = NULL; });
