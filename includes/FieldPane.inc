@@ -26,7 +26,7 @@ class FieldPane {
   public static function Theme($element) {
     $children = isset($element['#children']) ? $element['#children'] : '';
     $description = isset($element['#description']) ? "<div class='description'>{$element['#description']}</div>" : '';
-    return "<div id='{$element['#hash']}'>{$description}{$children}</div>";
+    return "<div id='{$element['#hash']}' class='islandora-form-fieldpanel-pane'>{$description}{$children}</div>";
   }
 
   /**
