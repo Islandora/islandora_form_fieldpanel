@@ -19,8 +19,6 @@ class FieldPanel {
     if ($load) {
       form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Element');
       Element::addRequiredResources();
-      Element::addUIWidgets('ui.tabs');
-      Element::addUIThemeStyles(array('ui.core.css', 'ui.tabs.css', 'ui.theme.css'));
       drupal_add_js(ISLANDORA_FORM_FIELDPANEL_PATH_JS . 'fieldpanel.js');
       drupal_add_css(ISLANDORA_FORM_FIELDPANEL_PATH_CSS . 'fieldpanel.css');
       $load = FALSE;
@@ -53,7 +51,7 @@ class FieldPanel {
 }
 
 /**
- * Preprocess tabs theme hook.
+ * Preprocess panel theme hook.
  *
  * @param array $vars
  */
