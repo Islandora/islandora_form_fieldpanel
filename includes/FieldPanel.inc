@@ -7,6 +7,10 @@
 module_load_include('inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
 
 class FieldPanel {
+  /**
+   * Constants
+   */
+  const AddButton = 'add-fieldpane';
 
   /**
    * Loads the required resources for displaying the FieldPane element.
@@ -34,9 +38,44 @@ class FieldPanel {
    */
   public static function process(array $element, array &$form_state, array $complete_form = NULL) {
     self::addRequiredResources($form_state);
-    $element['#prefix'] = "<div class='clear-block' id='{$element['#hash']}'>";
+    $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE; // Defaults to TRUE
+    if ($add) {
+      $add_label = isset($element['#user_data']['add_label']) ? $element['#user_data']['add_label'] : t('Add');
+      $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
+    }
+    $element['#prefix'] = "<div class='clear-block islandora-form-fieldpanel-panel' id='{$element['#hash']}'>";
     $element['#suffix'] = '</div>';
     return $element;
+  }
+
+  /**
+   * Creates a button that allows fieldpanes to duplicate.
+   *
+   * @param FormElement $fieldpane
+   * @return FormElement
+   */
+  private static function createAddButton(array &$element, array &$complete_form, $label) {
+    $add['#type'] = 'button';
+    $add['#weight'] = 4;
+    $add['#size'] = 30;
+    $add['#id'] = $add['#name'] = $element['#hash'] . '-add';
+    $add['#value'] = $label;
+    $add['#prefix'] = '<div class="ui-fieldpane-add-button">';
+    $add['#suffix'] = '</div>';
+    $add['#limit_validation_errors'][] = $element['#parents'];
+    $add['#ajax'] = array(
+      'params' => array(
+        'target' => $element['#hash'],
+        'render' => $element['#hash'],
+        'action' => 'add',
+        'child' => $element['#hash']
+      ),
+      'callback' => 'xml_form_elements_ajax_callback',
+      'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
+      'method' => 'replaceWith',
+      'effect' => 'fade',
+    );
+    return $add;
   }
 
   /**

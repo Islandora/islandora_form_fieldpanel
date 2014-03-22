@@ -11,10 +11,6 @@ module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
  * A collection of static functions that allow for theming and processing fieldpanes.
  */
 class FieldPane {
-  /**
-   * Constants
-   */
-  const AddButton = 'add-fieldpane';
   const DeleteButton = 'delete-fieldpane';
 
   /**
@@ -41,48 +37,12 @@ class FieldPane {
    * @return array
    */
   public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
-    $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE; // Defaults to TRUE
-    if ($add) {
-      $add_label = isset($element['#user_data']['add_label']) ? $element['#user_data']['add_label'] : t('Add');
-      $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
-    }
     $delete = isset($element['#user_data']['delete']) ? $element['#user_data']['delete'] : TRUE; // Defaults to TRUE
     if ($delete && $element['#weight'] !== 0) {
       $delete_label = isset($element['#user_data']['delete_label']) ? $element['#user_data']['delete_label'] : t('Delete');
       $element[self::DeleteButton] = self::createRemoveButton($element, $complete_form, $delete_label);
     }
     return $element;
-  }
-
-  /**
-   * Creates a button that allows fieldpanes to duplicate.
-   *
-   * @param FormElement $fieldpane
-   * @return FormElement
-   */
-  private static function createAddButton(array &$element, array &$complete_form, $label) {
-    $tabs = get_form_element_parent($element, $complete_form);
-    $add['#type'] = 'button';
-    $add['#weight'] = 4;
-    $add['#size'] = 30;
-    $add['#id'] = $add['#name'] = $element['#hash'] . '-add';
-    $add['#value'] = $label;
-    $add['#prefix'] = '<div class="ui-fieldpane-add-button">';
-    $add['#suffix'] = '</div>';
-    $add['#limit_validation_errors'][] = $element['#parents'];
-    $add['#ajax'] = array(
-      'params' => array(
-        'target' => $tabs['#hash'],
-        'render' => $tabs['#hash'],
-        'action' => 'add',
-        'child' => $element['#hash']
-      ),
-      'callback' => 'xml_form_elements_ajax_callback',
-      'wrapper' => $tabs['#hash'], // The parents wrapper is set to the parents hash.
-      'method' => 'replaceWith',
-      'effect' => 'fade',
-    );
-    return $add;
   }
 
   /**
