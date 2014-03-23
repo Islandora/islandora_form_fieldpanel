@@ -4,6 +4,8 @@
 
 An alternative to the tabpanels/tabs from the form builder.
 
+![Imgur](http://i.imgur.com/R0SYZb1.png)
+
 ## Requirements
 
 This module requires the following modules/libraries:
