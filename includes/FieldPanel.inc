@@ -11,6 +11,7 @@ class FieldPanel {
    * Constants
    */
   const AddButton = 'add-fieldpane';
+  const MoveFieldset = 'move-fieldpane';
 
   /**
    * Loads the required resources for displaying the FieldPane element.
@@ -44,6 +45,9 @@ class FieldPanel {
       $add_label = isset($element['#user_data']['add_label']) ? $element['#user_data']['add_label'] : t('Add');
       $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
     }
+    if (count($children) > 1) {
+      $element[self::MoveFieldset] = self::createMoveFieldset($element, $complete_form, t('Move'));
+    }
     $element['#prefix'] = "<div class='clear-block islandora-form-fieldpanel-container' id='{$element['#hash']}'>";
     $element['#suffix'] = '</div>';
     return $element;
@@ -63,6 +67,7 @@ class FieldPanel {
     $add['#weight'] = 4;
     $add['#size'] = 30;
     $add['#id'] = $add['#name'] = $element['#hash'] . '-add';
+    $add['#attributes'] = array('class' => array('fieldpanel-add'));
     $add['#value'] = $label;
     $add['#prefix'] = '<div class="ui-fieldpane-add-button">';
     $add['#suffix'] = '</div>';
@@ -80,6 +85,65 @@ class FieldPanel {
       'effect' => 'fade',
     );
     return $add;
+  }
+
+  private static function createMoveFieldset(array &$element, array &$complete_form, $label) {
+    $children = element_children($element);
+    $options = array();
+    $counter = 0;
+    foreach ($children as $child) {
+      if (is_numeric($child)) {
+        $options[$child] = $counter;
+        if ($counter == 0) {
+          $options[$child] = 'Top';
+        }
+        $counter++;
+      }
+    }
+    $child = $element[array_shift($children)];
+
+    $move = array(
+      '#type' => 'fieldset',
+      '#title' => $label,
+      '#id' => $element['#hash'] . '-swap-fieldset',
+      '#attributes' => array('class' => array('fieldpanel-swap-fieldset')),
+      '#name' => $element['#hash'] . '-swap-fieldset',
+      '#description' => t('Move element to position. All elements at that position (and after) will be moved one step down'),
+    );
+    $move['move-element'] = array(
+      '#type' => 'select',
+      '#title' => t('Element Number'),
+      '#attributes' => array('class' => array('fieldpanel-swap-fieldset-move-element')),
+      '#options' => $options,
+      '#default_value' => '0',
+    );
+    $move['move-position'] = array(
+      '#type' => 'select',
+      '#attributes' => array('class' => array('fieldpanel-swap-fieldset-move-position')),
+      '#title' => t('Position Number'),
+      '#options' => $options,
+      '#default_value' => '0',
+    );
+    $move['move-op'] = array(
+      '#type' => 'button',
+      '#id' => $element['#hash'] . '-move',
+      '#name' => $element['#hash'] . '-move',
+      '#value' => $label,
+      '#limit_validation_errors' => array($element['#parents']),
+      '#ajax' => array(
+        'params' => array(
+          'target' => $element['#hash'],
+          'render' => $element['#hash'],
+          'action' => 'move',
+          'child' => $child['#hash'],
+        ),
+        'callback' => 'xml_form_elements_ajax_callback',
+        'wrapper' => $element['#hash'],
+        'method' => 'replaceWith',
+        'effect' => 'fade',
+      ),
+    );
+    return $move;
   }
 
   /**

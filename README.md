@@ -32,7 +32,7 @@ Having problems or solved a problem? Check out the Islandora google groups for a
 
 Why the alternative?
 
-It is simply to provide a way to enter data for multi-value fields in a similar fashion to what is offered via the Drupal Field UI. The advantage of the module would be that you can see all the data up-front without needing to click on any tabs. The downside is that you can end up with a lot of scrolling.
+It is simply to provide a way to enter data for multi-value fields in a similar fashion to what is offered via the Drupal Field UI. The advantage of the module would be that you can see all the data up-front without needing to click on any tabs. The downside is that you can end up with a lot of scrolling. This module also provides better capabilities to reorder data.
 
 ## Maintainers
 

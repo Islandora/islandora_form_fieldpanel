@@ -8,3 +8,12 @@
     padding: 5px;
     margin: 5px;
 }
+
+.ui-fieldpane-delete-button {
+    display: inline;
+}
+
+.ui-fieldpane-move-down-button,
+.ui-fieldpane-move-up-button {
+    display: none;
+}

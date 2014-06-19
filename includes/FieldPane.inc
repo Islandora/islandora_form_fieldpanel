@@ -12,6 +12,8 @@ module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
  */
 class FieldPane {
   const DeleteButton = 'delete-fieldpane';
+  const MoveUpButton = 'move-up-fieldpane';
+  const MoveDownButton = 'move-down-fieldpane';
 
   /**
    * FieldPane's theme hook.
@@ -44,6 +46,14 @@ class FieldPane {
       $delete_label = isset($element['#user_data']['delete_label']) ? $element['#user_data']['delete_label'] : t('Delete');
       $element[self::DeleteButton] = self::createRemoveButton($element, $complete_form, $delete_label);
     }
+    $weight = $element['#weight'] * 1000;
+    $number_children = count($children) - 3;
+    if ($weight > 0) {
+      $element[self::MoveUpButton] = self::createMoveUpButton($element, $complete_form, t('Move Up'));
+    }
+    if ($weight < $number_children) {
+      $element[self::MoveDownButton] = self::createMoveDownButton($element, $complete_form, t('Move Down'));
+    }
     return $element;
   }
 
@@ -55,15 +65,15 @@ class FieldPane {
    */
   private static function createRemoveButton(array &$element, array & $complete_form, $label) {
     $tabs = get_form_element_parent($element, $complete_form);
-    $delete['#type'] = 'button';
-    $delete['#weight'] = 4;
-    $delete['#size'] = 30;
-    $delete['#id'] = $delete['#name'] = $element['#hash'] . '-remove';
-    $delete['#value'] = $label;
-    $delete['#prefix'] = '<div class="ui-fieldpane-delete-button">';
-    $delete['#suffix'] = '</div>';
-    $delete['#limit_validation_errors'][] = $element['#parents'];
-    $delete['#ajax'] = array(
+    $button['#type'] = 'button';
+    $button['#weight'] = 10;
+    $button['#size'] = 30;
+    $button['#id'] = $button['#name'] = $element['#hash'] . '-remove';
+    $button['#value'] = $label;
+    $button['#prefix'] = '<div class="ui-fieldpane-delete-button">';
+    $button['#suffix'] = '</div>';
+    $button['#limit_validation_errors'][] = $element['#parents'];
+    $button['#ajax'] = array(
       'callback' => 'xml_form_elements_ajax_callback',
       'params' => array(
         'target' => $tabs['#hash'],
@@ -75,9 +85,48 @@ class FieldPane {
       'method' => 'replaceWith',
       'effect' => 'fade',
     );
-    return $delete;
+    return $button;
   }
 
+  /**
+   * Creates a move up button that allows the user to move this element up by one.
+   *
+   * @param FormElement $fieldpane
+   * @return FormElement
+   */
+  private static function createMoveUpButton(array &$element, array & $complete_form, $label) {
+    $tabs = get_form_element_parent($element, $complete_form);
+    $button['#type'] = 'button';
+    $button['#weight'] = 4;
+    $button['#size'] = 30;
+    $button['#id'] = $button['#name'] = $element['#hash'] . '-move_up';
+    $button['#attributes']['data-position'] = $element['#weight'] * 1000;
+    $button['#value'] = $label;
+    $button['#prefix'] = '<div class="ui-fieldpane-move-up-button">';
+    $button['#suffix'] = '</div>';
+    $button['#limit_validation_errors'][] = $element['#parents'];
+    return $button;
+  }
+
+  /**
+   * Creates a move up button that allows the user to move this element down by one.
+   *
+   * @param FormElement $fieldpane
+   * @return FormElement
+   */
+  private static function createMoveDownButton(array &$element, array & $complete_form, $label) {
+    $tabs = get_form_element_parent($element, $complete_form);
+    $button['#type'] = 'button';
+    $button['#weight'] = 5;
+    $button['#size'] = 30;
+    $button['#id'] = $button['#name'] = $element['#hash'] . '-move_down';
+    $button['#attributes']['data-position'] = $element['#weight'] * 1000;
+    $button['#value'] = $label;
+    $button['#prefix'] = '<div class="ui-fieldpane-move-down-button">';
+    $button['#suffix'] = '</div>';
+    $button['#limit_validation_errors'][] = $element['#parents'];
+    return $button;
+  }
 }
 
 /**

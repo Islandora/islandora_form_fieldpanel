@@ -92,10 +92,15 @@ function islandora_form_fieldpanel_fieldpane_process(array $element, array &$for
  *   The processed element.
  */
 function islandora_form_fieldpanel_fieldpanel_process(array $element, array &$form_state, array $complete_form = NULL) {
+  drupal_add_library('system', 'ui.sortable');
+  drupal_add_js(drupal_get_path('module', 'islandora_form_fieldpanel') . '/js/fieldpanel.js');
   form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
   return FieldPanel::Process($element, $form_state, $complete_form);
 }
 
+/**
+ * Implements hook_WIDGET_ajax_alter().
+ */
 function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElement $element, array &$form, array &$form_state) {
   $triggering_element = $form_state['triggering_element'];
   $action = $triggering_element['#ajax']['params']['action'];
@@ -106,9 +111,15 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
     case 'delete':
       islandora_form_fieldpanel_form_element_fieldpane_ajax_delete($element, $form, $form_state);
       break;
+    case 'move':
+      islandora_form_fieldpanel_form_element_fieldpane_ajax_move($element, $form, $form_state);
+      break;
   }
 }
 
+/**
+ * Adds new field pane to panel.
+ */
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $element, array &$form, array &$form_state) {
   $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
   $new_pane = clone $pane;
@@ -117,6 +128,9 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $
   $form[] = $new_pane->toArray();
 }
 
+/**
+ * Removed field pane from panel.
+ */
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_delete(FormElement $element, array &$form, array &$form_state) {
   $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
   $pane->orphan();
@@ -126,4 +140,59 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_delete(FormElemen
       break;
     }
   }
+}
+
+/**
+ * Moves field panel to new position.
+ */
+function islandora_form_fieldpanel_form_element_fieldpane_ajax_move(FormElement $element, &$form, &$form_state) {
+  $values = $form_state['values'];
+  $move_values = _islandora_form_field_panel_form_element_retrieve_move_values($values);
+
+  // Deal with input form.
+  $current_values = &$form_state['input'];
+  $current_complete_form_values = &$form_state['complete form'];
+  foreach ($form_state['triggering_element']['#parents'] as $value) {
+    if ($value !== 'move-fieldpane' && $value !== 'move-up-fieldpane' && $value !== 'move-down-fieldpane' && $value !== 'move-op' && !is_int($value)) {
+      $current_values = &$current_values[$value];
+      $current_complete_form_values = &$current_complete_form_values[$value];
+    }
+  }
+
+  $move_element = $current_values[intval($move_values['move-element'])];
+  unset($current_values[intval($move_values['move-element'])]);
+  $children = array();
+  foreach ($current_values as $key => $value) {
+    if (is_int($key)) {
+      if ($key == $move_values['move-position']) {
+        $children[] = $move_element;
+      }
+      $children[] = $value;
+    }
+    else {
+      $children[$key] = $value;
+    }
+    unset($current_values[$key]);
+  }
+  foreach ($children as $key => $value) {
+    $current_values[$key] = $value;
+  }
+}
+
+/**
+ * Retrieves move values from form state values.
+ */
+function _islandora_form_field_panel_form_element_retrieve_move_values($values) {
+  foreach ($values as $key => $value) {
+    if ($key === 'move-fieldpane') {
+      return $value;
+    }
+    else if (is_array($value)) {
+      $move_values = _islandora_form_field_panel_form_element_retrieve_move_values($value);
+      if (!empty($move_values)) {
+        return $move_values;
+      }
+    }
+  }
+  return NULL;
 }
