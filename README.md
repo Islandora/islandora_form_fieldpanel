@@ -4,7 +4,7 @@
 
 An alternative to the tabpanels/tabs from the form builder.
 
-![Imgur](http://i.imgur.com/Kp90Clt.png)
+![Imgur](http://i.imgur.com/mAHBKWY.png)
 
 ## Requirements
 
