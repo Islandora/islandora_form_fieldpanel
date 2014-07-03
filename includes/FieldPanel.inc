@@ -22,7 +22,6 @@ class FieldPanel {
   public static function addRequiredResources(array &$form_state) {
     static $load = TRUE;
     if ($load) {
-      drupal_add_js('misc/jquery.form.js');
       drupal_add_js(ISLANDORA_FORM_FIELDPANEL_PATH_JS . 'fieldpanel.js');
       drupal_add_css(ISLANDORA_FORM_FIELDPANEL_PATH_CSS . 'fieldpanel.css');
       $load = FALSE;
