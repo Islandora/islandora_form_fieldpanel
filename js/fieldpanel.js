@@ -12,15 +12,20 @@
         var swap = $(parent).children('.fieldpanel-swap-fieldset');
 
         var check = false;
+        var second_check = false;
         var element = 0;
+        var counter = 0;
         $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function() {
           if (check == true) {
             element = $(this).val();
             check = false;
+            second_check = true;
           }
-          else if ($(this).val() == ("" + position)) {
+          else if (counter == position && second_check == false) {
+            position= $(this).val();
             check = true;
           }
+          counter++;
         })
         $(swap).find('.fieldpanel-swap-fieldset-move-element').val("" + element).change();
         $(swap).find('.fieldpanel-swap-fieldset-move-position').val("" + position).change();
@@ -34,14 +39,19 @@
         var swap = $(parent).children('.fieldpanel-swap-fieldset');
 
         var check = false;
+        var second_check = false;
         var element = 0;
+        var counter = 0;
         $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function() {
-          if ($(this).val() == ("" + position)) {
-            check = true;
-          }
-          else if (check == false) {
+          if (counter != position && check == false) {
             element = $(this).val();
           }
+          else if (counter == position && second_check == false) {
+            position = $(this).val();
+            second_check = true;
+            check = true;
+          }
+          counter++;
         })
         $(swap).find('.fieldpanel-swap-fieldset-move-element').val("" + position).change();
         $(swap).find('.fieldpanel-swap-fieldset-move-position').val("" + element).change();

@@ -160,23 +160,8 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_move(FormElement 
   }
 
   $move_element = $current_values[intval($move_values['move-element'])];
-  unset($current_values[intval($move_values['move-element'])]);
-  $children = array();
-  foreach ($current_values as $key => $value) {
-    if (is_int($key)) {
-      if ($key == $move_values['move-position']) {
-        $children[] = $move_element;
-      }
-      $children[] = $value;
-    }
-    else {
-      $children[$key] = $value;
-    }
-    unset($current_values[$key]);
-  }
-  foreach ($children as $key => $value) {
-    $current_values[$key] = $value;
-  }
+  $current_values[intval($move_values['move-element'])] = $current_values[$move_values['move-position']];
+  $current_values[$move_values['move-position']] = $move_element;
 }
 
 /**
