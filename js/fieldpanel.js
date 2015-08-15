@@ -1,3 +1,8 @@
+/**
+ * @file
+ * Provides capability to move field panel element up/down
+ */
+
 (function($) {
   Drupal.behaviors.islandora_form_fieldpanel = {
     attach: function (context) {
