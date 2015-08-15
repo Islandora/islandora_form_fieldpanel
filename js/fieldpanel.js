@@ -3,7 +3,7 @@
  * Provides capability to move field panel element up/down
  */
 
-(function($) {
+(function ($) {
 
   "use strict";
 
@@ -13,7 +13,7 @@
       $('.ui-fieldpane-move-up-button').css('display', 'inline');
       $('.fieldpanel-swap-fieldset').hide();
       $('.ui-field');
-      $('.ui-fieldpane-move-down-button .form-submit').click(function() {
+      $('.ui-fieldpane-move-down-button .form-submit').click(function () {
         $('.fieldpanel-add').click();
         var position = $(this).data('position');
         var parent = $(this).parent().parent().parent();
@@ -23,7 +23,7 @@
         var second_check = false;
         var element = 0;
         var counter = 0;
-        $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function() {
+        $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function () {
           if (check === true) {
             element = $(this).val();
             check = false;
@@ -40,7 +40,7 @@
         $(swap).find('.form-submit').trigger('mousedown');
         return false;
       });
-      $('.ui-fieldpane-move-up-button .form-submit').click(function() {
+      $('.ui-fieldpane-move-up-button .form-submit').click(function () {
         $('.fieldpanel-add').click();
         var position = $(this).data('position');
         var parent = $(this).parent().parent().parent();
@@ -50,7 +50,7 @@
         var second_check = false;
         var element = 0;
         var counter = 0;
-        $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function() {
+        $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function () {
           if (counter !== position && check === false) {
             element = $(this).val();
           }
