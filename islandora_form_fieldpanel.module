@@ -147,7 +147,7 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_delete(FormElemen
  */
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_move(FormElement $element, &$form, &$form_state) {
   $values = $form_state['values'];
-  $move_values = _islandora_form_field_panel_form_element_retrieve_move_values($values);
+  $move_values = _islandora_form_fieldpanel_form_element_retrieve_move_values($values);
 
   // Deal with input form.
   $current_values = &$form_state['input'];
@@ -167,13 +167,13 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_move(FormElement 
 /**
  * Retrieves move values from form state values.
  */
-function _islandora_form_field_panel_form_element_retrieve_move_values($values) {
+function _islandora_form_fieldpanel_form_element_retrieve_move_values($values) {
   foreach ($values as $key => $value) {
     if ($key === 'move-fieldpane') {
       return $value;
     }
     else if (is_array($value)) {
-      $move_values = _islandora_form_field_panel_form_element_retrieve_move_values($value);
+      $move_values = _islandora_form_fieldpanel_form_element_retrieve_move_values($value);
       if (!empty($move_values)) {
         return $move_values;
       }
