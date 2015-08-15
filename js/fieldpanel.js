@@ -4,6 +4,9 @@
  */
 
 (function($) {
+
+  "use strict";
+
   Drupal.behaviors.islandora_form_fieldpanel = {
     attach: function (context) {
       $('.ui-fieldpane-move-down-button').css('display', 'inline');
