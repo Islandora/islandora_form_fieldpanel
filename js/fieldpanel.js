@@ -12,7 +12,7 @@
       $('.ui-fieldpane-move-down-button').css('display', 'inline');
       $('.ui-fieldpane-move-up-button').css('display', 'inline');
       $('.fieldpanel-swap-fieldset').hide();
-      $('.ui-field')
+      $('.ui-field');
       $('.ui-fieldpane-move-down-button .form-submit').click(function() {
         $('.fieldpanel-add').click();
         var position = $(this).data('position');
