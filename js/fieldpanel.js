@@ -24,13 +24,13 @@
         var element = 0;
         var counter = 0;
         $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function() {
-          if (check == true) {
+          if (check === true) {
             element = $(this).val();
             check = false;
             second_check = true;
           }
-          else if (counter == position && second_check == false) {
-            position= $(this).val();
+          else if (counter === position && second_check === false) {
+            position = $(this).val();
             check = true;
           }
           counter++;
@@ -51,10 +51,10 @@
         var element = 0;
         var counter = 0;
         $(swap).find('.fieldpanel-swap-fieldset-move-element option').each(function() {
-          if (counter != position && check == false) {
+          if (counter !== position && check === false) {
             element = $(this).val();
           }
-          else if (counter == position && second_check == false) {
+          else if (counter === position && second_check === false) {
             position = $(this).val();
             second_check = true;
             check = true;
