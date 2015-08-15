@@ -34,7 +34,7 @@
             check = true;
           }
           counter++;
-        })
+        });
         $(swap).find('.fieldpanel-swap-fieldset-move-element').val("" + element).change();
         $(swap).find('.fieldpanel-swap-fieldset-move-position').val("" + position).change();
         $(swap).find('.form-submit').trigger('mousedown');
@@ -60,7 +60,7 @@
             check = true;
           }
           counter++;
-        })
+        });
         $(swap).find('.fieldpanel-swap-fieldset-move-element').val("" + position).change();
         $(swap).find('.fieldpanel-swap-fieldset-move-position').val("" + element).change();
         $(swap).find('.form-submit').trigger('mousedown');
