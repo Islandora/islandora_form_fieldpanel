@@ -1,19 +1,19 @@
 .islandora-form-fieldpanel-panel {
-    border: 1px solid #AAA;
-    padding: 5px;
+  border: 1px solid #aaa;
+  padding: 5px;
 }
 
 .islandora-form-fieldpanel-pane {
-    border: 1px solid #AAA;
-    padding: 5px;
-    margin: 5px;
+  border: 1px solid #aaa;
+  padding: 5px;
+  margin: 5px;
 }
 
 .ui-fieldpane-delete-button {
-    display: inline;
+  display: inline;
 }
 
 .ui-fieldpane-move-down-button,
 .ui-fieldpane-move-up-button {
-    display: none;
+  display: none;
 }

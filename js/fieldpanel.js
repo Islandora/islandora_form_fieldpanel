@@ -1,6 +1,6 @@
 /**
  * @file
- * Provides capability to move field panel element up/down
+ * Provides capability to move field panel element up/down.
  */
 
 (function ($) {

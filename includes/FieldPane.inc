@@ -124,7 +124,6 @@ class FieldPane {
    *   The processed element.
    */
   private static function createMoveUpButton(array &$element, array & $complete_form, $label) {
-    $tabs = get_form_element_parent($element, $complete_form);
     $button['#type'] = 'button';
     $button['#weight'] = 4;
     $button['#size'] = 30;
@@ -153,7 +152,6 @@ class FieldPane {
    *   The processed element.
    */
   private static function createMoveDownButton(array &$element, array & $complete_form, $label) {
-    $tabs = get_form_element_parent($element, $complete_form);
     $button['#type'] = 'button';
     $button['#weight'] = 5;
     $button['#size'] = 30;
