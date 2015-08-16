@@ -71,7 +71,7 @@ function islandora_form_fieldpanel_theme($existing, $type, $theme, $path) {
  */
 function islandora_form_fieldpanel_fieldpane_process(array $element, array &$form_state, array $complete_form = NULL) {
   form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPane');
-  return FieldPane::Process($element, $form_state, $complete_form);
+  return FieldPane::process($element, $form_state, $complete_form);
 }
 
 /**
@@ -91,7 +91,7 @@ function islandora_form_fieldpanel_fieldpanel_process(array $element, array &$fo
   drupal_add_library('system', 'ui.sortable');
   drupal_add_js(drupal_get_path('module', 'islandora_form_fieldpanel') . '/js/fieldpanel.js');
   form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
-  return FieldPanel::Process($element, $form_state, $complete_form);
+  return FieldPanel::process($element, $form_state, $complete_form);
 }
 
 /**
