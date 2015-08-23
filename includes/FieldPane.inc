@@ -26,7 +26,7 @@ class FieldPane {
    * @return string
    *   The processed string.
    */
-  public static function theme($element) {
+  public static function theme(array $element) {
     $children = isset($element['#children']) ? $element['#children'] : '';
     $description = isset($element['#description']) ? "<div class='description'>{$element['#description']}</div>" : '';
     return "<div id='{$element['#hash']}' class='islandora-form-fieldpanel-pane'>{$description}{$children}</div>";

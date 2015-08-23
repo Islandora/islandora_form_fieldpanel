@@ -193,7 +193,7 @@ class FieldPanel {
 /**
  * Preprocess panel theme hook.
  *
- * @param array $vars
+ * @param $vars
  *   The vars.
  */
 function template_preprocess_fieldpanel(&$vars) {

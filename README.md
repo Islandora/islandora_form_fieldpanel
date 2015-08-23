@@ -1,4 +1,4 @@
-# Islandora XML Form Element: FieldPanel [![Build Status](https://travis-ci.org/Islandora/islandora_islandora_form_fieldpanel.png?branch=7.x)](https://travis-ci.org/Islandora/islandora_form_fieldpanel)
+# Islandora XML Form Element: FieldPanel [![Build Status](https://api.travis-ci.org/Islandora/islandora_form_fieldpanel.png?branch=7.x)](https://travis-ci.org/Islandora/islandora_form_fieldpanel)
 
 ## Introduction
 
