@@ -191,10 +191,7 @@ class FieldPanel {
 }
 
 /**
- * Preprocess panel theme hook.
- *
- * @param $vars
- *   The vars.
+ * Implements hook_preprocess_fieldpanel().
  */
 function template_preprocess_fieldpanel(&$vars) {
   $tabs = $vars['element'];
