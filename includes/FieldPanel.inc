@@ -5,8 +5,6 @@
  * Allows forms to dynamically add new fieldpanes to a fieldpanel in a form.
  */
 
-module_load_include('inc', 'islandora_form_fieldpanel', 'includes/FieldPane');
-
 /**
  * A collection of static functions.
  *
