@@ -37,7 +37,3 @@ It is simply to provide a way to enter data for multi-value fields in a similar 
 ## Maintainers
 
 [Ashok Modi](https://github.com/btmash)
-
-## License
-
-[GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
