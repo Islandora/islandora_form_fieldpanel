@@ -2,22 +2,28 @@
 
 /**
  * @file
- *
+ * Allows forms to dynamically add new fieldpanes to a fieldpanel in a form.
  */
-module_load_include('inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
 
+/**
+ * A collection of static functions.
+ *
+ * Allows for theming and processing fieldpanesls.
+ */
 class FieldPanel {
+
   /**
-   * Constants
+   * Constants.
    */
-  const AddButton = 'add-fieldpane';
-  const MoveFieldset = 'move-fieldpane';
+  const ADDBUTTON = 'add-fieldpane';
+  const MOVEFIELDSET = 'move-fieldpane';
 
   /**
    * Loads the required resources for displaying the FieldPane element.
    *
-   * @staticvar boolean $load
-   *   Keeps us from loading the same files multiple times, while not required it just saves some time.
+   * @static var boolean $load
+   *   Keeps us from loading the same files multiple times, while not required
+   *   it just saves some time.
    */
   public static function addRequiredResources(array &$form_state) {
     static $load = TRUE;
@@ -29,22 +35,26 @@ class FieldPanel {
   }
 
   /**
+   * FieldPanel's theme hook.
    *
    * @param array $element
-   * @param type $edit
+   *   The element.
    * @param array $form_state
+   *   The form state.
    * @param array $complete_form
+   *   The completed form.
    */
   public static function process(array $element, array &$form_state, array $complete_form = NULL) {
     self::addRequiredResources($form_state);
-    $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE; // Defaults to TRUE
+    // Defaults to TRUE.
+    $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE;
     $children = element_children($element);
     if ($add && !empty($children)) {
       $add_label = isset($element['#user_data']['add_label']) ? $element['#user_data']['add_label'] : t('Add');
-      $element[self::AddButton] = self::createAddButton($element, $complete_form, $add_label);
+      $element[self::ADDBUTTON] = self::createAddButton($element, $complete_form, $add_label);
     }
     if (count($children) > 1) {
-      $element[self::MoveFieldset] = self::createMoveFieldset($element, $complete_form, t('Move'));
+      $element[self::MOVEFIELDSET] = self::createMoveFieldset($element, $complete_form, t('Move'));
     }
     $element['#prefix'] = "<div class='clear-block islandora-form-fieldpanel-container' id='{$element['#hash']}'>";
     $element['#suffix'] = '</div>';
@@ -54,8 +64,15 @@ class FieldPanel {
   /**
    * Creates a button that allows fieldpanes to duplicate.
    *
-   * @param FormElement $fieldpane
+   * @param array $element
+   *   The element.
+   * @param array $complete_form
+   *   The completed form.
+   * @param string $label
+   *   The label.
+   *
    * @return FormElement
+   *   The processed form element.
    */
   private static function createAddButton(array &$element, array &$complete_form, $label) {
     $children = element_children($element);
@@ -78,13 +95,27 @@ class FieldPanel {
         'child' => $child['#hash'],
       ),
       'callback' => 'xml_form_elements_ajax_callback',
-      'wrapper' => $element['#hash'], // The parents wrapper is set to the parents hash.
+      // The parents wrapper is set to the parents hash.
+      'wrapper' => $element['#hash'],
       'method' => 'replaceWith',
       'effect' => 'fade',
     );
     return $add;
   }
 
+  /**
+   * Creates a fieldset to move FieldPane elements.
+   *
+   * @param array $element
+   *   The element.
+   * @param array $complete_form
+   *   The completed form.
+   * @param string $label
+   *   The label.
+   *
+   * @return FormElement
+   *   The processed form element.
+   */
   private static function createMoveFieldset(array &$element, array &$complete_form, $label) {
     $children = element_children($element);
     $options = array();
@@ -145,10 +176,12 @@ class FieldPanel {
   }
 
   /**
+   * A function to filter children of a fieldpane.
    *
-   * @param array $children
+   * @param array $child
+   *   The child element.
    */
-  public static function FilterChildren(array $child) {
+  public static function filterChildren(array $child) {
     $ret = ($child['#type'] == 'fieldpane') ? TRUE : FALSE;
     return $ret;
   }
@@ -156,23 +189,21 @@ class FieldPanel {
 }
 
 /**
- * Preprocess panel theme hook.
- *
- * @param array $vars
+ * Implements hook_preprocess_fieldpanel().
  */
 function template_preprocess_fieldpanel(&$vars) {
   $tabs = $vars['element'];
-  // Header Info
+  // Header Info.
   $vars['collapsible'] = $tabs['#collapsible'] == TRUE;
   $vars['collapsed'] = $tabs['#collapsed'] == TRUE;
-  // Get Fieldpanel
+  // Get Fieldpanel.
   $keys = element_children($tabs);
   $children = array();
 
   foreach ($keys as $key) {
     $children[$key] = &$tabs[$key];
   }
-  $children = array_filter($children, array('FieldPanel', 'FilterChildren'));
+  $children = array_filter($children, array('FieldPanel', 'filterChildren'));
   // First element has different icons, and title.
   $first = array_shift($children);
   $vars['title'] = isset($first['#title']) ? $first['#title'] : 1;
@@ -181,11 +212,11 @@ function template_preprocess_fieldpanel(&$vars) {
   $count = 2;
   foreach ($children as $child) {
     $title = isset($child['#title']) ? $child['#title'] : $count;
-    $delete = isset($child[FieldPane::DeleteButton]) ? $child[FieldPane::DeleteButton]['#id'] : FALSE;
+    $delete = isset($child[FieldPane::DELETEBUTTON]) ? $child[FieldPane::DELETEBUTTON]['#id'] : FALSE;
     $vars['fieldpane'][] = array($title, $child['#hash'], $delete);
     $count++;
   }
-  // Content Info
+  // Content Info.
   if (isset($tabs['#children'])) {
     $vars['content'] = $tabs['#children'];
   }

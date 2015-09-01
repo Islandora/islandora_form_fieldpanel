@@ -10,4 +10,3 @@ $classes .= ($collapsed) ? 'islandora-form-fieldpanel-collapsed' : '';
   <!-- Content  -->
   <?php print $content ?>
 </div>
-

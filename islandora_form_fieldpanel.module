@@ -6,7 +6,7 @@
  */
 
 /**
- * Constants
+ * Constants.
  */
 define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANEL', 'fieldpanel');
 define('ISLANDORA_FORM_FIELDPANEL_THEME_FIELDPANE', 'fieldpane');
@@ -61,8 +61,6 @@ function islandora_form_fieldpanel_theme($existing, $type, $theme, $path) {
  *
  * @param array $element
  *   The element to be processed.
- * @param mixed $edit
- *   The submitted value for this element, or NULL.
  * @param array $form_state
  *   The drupal form state.
  * @param array $complete_form
@@ -73,7 +71,7 @@ function islandora_form_fieldpanel_theme($existing, $type, $theme, $path) {
  */
 function islandora_form_fieldpanel_fieldpane_process(array $element, array &$form_state, array $complete_form = NULL) {
   form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPane');
-  return FieldPane::Process($element, $form_state, $complete_form);
+  return FieldPane::process($element, $form_state, $complete_form);
 }
 
 /**
@@ -81,8 +79,6 @@ function islandora_form_fieldpanel_fieldpane_process(array $element, array &$for
  *
  * @param array $element
  *   The element to be processed.
- * @param mixed $edit
- *   The submitted value for this element, or NULL.
  * @param array $form_state
  *   The drupal form state.
  * @param array $complete_form
@@ -95,7 +91,7 @@ function islandora_form_fieldpanel_fieldpanel_process(array $element, array &$fo
   drupal_add_library('system', 'ui.sortable');
   drupal_add_js(drupal_get_path('module', 'islandora_form_fieldpanel') . '/js/fieldpanel.js');
   form_load_include($form_state, 'inc', 'islandora_form_fieldpanel', 'includes/FieldPanel');
-  return FieldPanel::Process($element, $form_state, $complete_form);
+  return FieldPanel::process($element, $form_state, $complete_form);
 }
 
 /**
@@ -108,12 +104,15 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
     case 'add':
       islandora_form_fieldpanel_form_element_fieldpane_ajax_add($element, $form, $form_state);
       break;
+
     case 'delete':
       islandora_form_fieldpanel_form_element_fieldpane_ajax_delete($element, $form, $form_state);
       break;
+
     case 'move':
       islandora_form_fieldpanel_form_element_fieldpane_ajax_move($element, $form, $form_state);
       break;
+
   }
 }
 
@@ -123,7 +122,9 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $element, array &$form, array &$form_state) {
   $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
   $new_pane = clone $pane;
-  $new_pane->eachDecendant(function($element) { $element->default_value = NULL; });
+  $new_pane->eachDecendant(function($element) {
+    $element->default_value = NULL;
+  });
   $element->adopt($new_pane);
   $form[] = $new_pane->toArray();
 }
@@ -147,7 +148,7 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_delete(FormElemen
  */
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_move(FormElement $element, &$form, &$form_state) {
   $values = $form_state['values'];
-  $move_values = _islandora_form_field_panel_form_element_retrieve_move_values($values);
+  $move_values = _islandora_form_fieldpanel_form_element_retrieve_move_values($values);
 
   // Deal with input form.
   $current_values = &$form_state['input'];
@@ -167,13 +168,13 @@ function islandora_form_fieldpanel_form_element_fieldpane_ajax_move(FormElement 
 /**
  * Retrieves move values from form state values.
  */
-function _islandora_form_field_panel_form_element_retrieve_move_values($values) {
+function _islandora_form_fieldpanel_form_element_retrieve_move_values($values) {
   foreach ($values as $key => $value) {
     if ($key === 'move-fieldpane') {
       return $value;
     }
-    else if (is_array($value)) {
-      $move_values = _islandora_form_field_panel_form_element_retrieve_move_values($value);
+    elseif (is_array($value)) {
+      $move_values = _islandora_form_fieldpanel_form_element_retrieve_move_values($value);
       if (!empty($move_values)) {
         return $move_values;
       }
