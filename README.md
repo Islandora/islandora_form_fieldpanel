@@ -19,7 +19,7 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 Set up using the same way as you would set up tabs/tabpanels, except interchange with FieldPanel/FieldPane, respectively.
 
-![Imgur](http://i.imgur.com/mAHBKWY.png)
+![Islandora XML Form Element: FieldPanel](https://raw.githubusercontent.com/wiki/islandora/islandora_form_fieldpanel/images/form_field_panel.png)
 
 ## Documentation
 
