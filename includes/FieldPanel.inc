@@ -212,7 +212,7 @@ function template_preprocess_fieldpanel(&$vars) {
   $count = 2;
   foreach ($children as $child) {
     $title = isset($child['#title']) ? $child['#title'] : $count;
-    $delete = isset($child[FieldPane::DeleteButton]) ? $child[FieldPane::DeleteButton]['#id'] : FALSE;
+    $delete = isset($child[FieldPane::DELETEBUTTON]) ? $child[FieldPane::DELETEBUTTON]['#id'] : FALSE;
     $vars['fieldpane'][] = array($title, $child['#hash'], $delete);
     $count++;
   }

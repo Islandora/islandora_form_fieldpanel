@@ -13,6 +13,10 @@ module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
  * These functions that allow for theming & processing fieldpanes.
  */
 class FieldPane {
+
+  /**
+   * Constants.
+   */
   const DELETEBUTTON = 'delete-fieldpane';
   const MOVEUPBUTTON = 'move-up-fieldpane';
   const MOVEDOWNBUTTON = 'move-down-fieldpane';
