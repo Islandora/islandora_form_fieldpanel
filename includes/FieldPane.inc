@@ -95,7 +95,6 @@ class FieldPane {
     $button['#value'] = $label;
     $button['#prefix'] = '<div class="ui-fieldpane-delete-button">';
     $button['#suffix'] = '</div>';
-    $button['#limit_validation_errors'] = array();
     $button['#ajax'] = array(
       'callback' => 'xml_form_elements_ajax_callback',
       'params' => array(
@@ -109,6 +108,7 @@ class FieldPane {
       'method' => 'replaceWith',
       'effect' => 'fade',
     );
+    $button['#limit_validation_errors'] = array();
     return $button;
   }
 
