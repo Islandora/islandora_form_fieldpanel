@@ -86,7 +86,6 @@ class FieldPanel {
     $add['#value'] = $label;
     $add['#prefix'] = '<div class="ui-fieldpane-add-button">';
     $add['#suffix'] = '</div>';
-    $add['#limit_validation_errors'][] = $element['#parents'];
     $add['#ajax'] = array(
       'params' => array(
         'target' => $element['#hash'],
@@ -100,6 +99,7 @@ class FieldPanel {
       'method' => 'replaceWith',
       'effect' => 'fade',
     );
+    $add['#limit_validation_errors'] = array();
     return $add;
   }
 
