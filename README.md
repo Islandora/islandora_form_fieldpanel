@@ -9,7 +9,7 @@ An alternative to the tabpanels/tabs from the form builder.
 This module requires the following modules/libraries:
 
 * [Islandora](https://github.com/islandora/islandora)
-* [XML Form Elements](https://github.com/Islandora/islandora_xml_forms)
+* [Islandora XML Forms](https://github.com/Islandora/islandora_xml_forms)
 
 ## Installation
 
@@ -34,15 +34,15 @@ Having problems or solved a problem? Check out the Islandora google groups for a
 
 ## FAQ
 
-Why the alternative?
+Q. Why the alternative?
 
-It is simply to provide a way to enter data for multi-value fields in a similar fashion to what is offered via the Drupal Field UI. The advantage of the module would be that you can see all the data up-front without needing to click on any tabs. The downside is that you can end up with a lot of scrolling. This module also provides better capabilities to reorder data.
+A. It is simply to provide a way to enter data for multi-value fields in a similar fashion to what is offered via the Drupal Field UI. The advantage of the module would be that you can see all the data up-front without needing to click on any tabs. The downside is that you can end up with a lot of scrolling. This module also provides better capabilities to reorder data.
 
 ## Maintainers
 
 Current maintainers:
 
-* [Ashok Modi](https://github.com/btmash)
+* [Jared Whiklo](https://github.com/whikloj)
 
 ## Development
 
