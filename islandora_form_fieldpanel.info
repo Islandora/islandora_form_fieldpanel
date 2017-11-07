@@ -4,5 +4,5 @@ package = Islandora Dependencies
 dependencies[] = xml_form_api
 files[] = includes/FieldPane.inc
 files[] = includes/FieldPanel.inc
-version = 7.x-1.10RC2
+version = 7.x-1.10
 core = 7.x
