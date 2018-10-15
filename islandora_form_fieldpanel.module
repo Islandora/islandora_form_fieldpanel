@@ -122,9 +122,37 @@ function islandora_form_fieldpanel_form_element_fieldpanel_ajax_alter(FormElemen
 function islandora_form_fieldpanel_form_element_fieldpane_ajax_add(FormElement $element, array &$form, array &$form_state) {
   $pane = $element->findElement($form_state['triggering_element']['#ajax']['params']['child']);
   $new_pane = clone $pane;
-  $new_pane->eachDecendant(function($element) {
-    $element->default_value = NULL;
-  });
+
+  $each_function = function ($element) {
+    // Set a FormElement to its default value.
+    $set_to_default = function ($el) {
+      $el->default_value = $el->getOriginalDefaultValue();
+    };
+
+    // Set this one...
+    $set_to_default($element);
+
+    if ($element->controls['#type'] == 'tags') {
+      // ... and make child "tag" elements unique.
+      // First, map 'em all to their defaults.
+      array_map($set_to_default, $element->children);
+
+      // Filter function: Only pass unique values.
+      $child_filter = function ($child) {
+        static $values = array();
+        $value = $child->default_value;
+        if (!in_array($value, $values)) {
+          $values[] = $value;
+          return TRUE;
+        }
+        return FALSE;
+      };
+      // Run the filter function.
+      $element->children = array_filter($element->children, $child_filter);
+    }
+  };
+  $new_pane->eachDecendant($each_function);
+
   $element->adopt($new_pane);
   $form[] = $new_pane->toArray();
 }
